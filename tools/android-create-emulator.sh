@@ -7,6 +7,8 @@ failcounter=0
 timeout=600
 sleeptime=10
 maxfail=$((timeout / sleeptime))
+adb start-server
+emulator -avd avd34 -no-window -accel off -no-boot-anim -no-audio &
 
 until [[ "${bootcomplete}" =~ "1" ]]; do
     bootcomplete=`adb -e shell getprop dev.bootcomplete 2>&1 &`
@@ -26,5 +28,6 @@ until [[ "${bootcomplete}" =~ "1" ]]; do
     fi
     sleep ${sleeptime}
 done
+adb emu avd snapshot save clear_device
 
 echo "Emulator is ready"
